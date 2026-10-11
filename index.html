@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aayush Mohan Bhagat | Strategy, Finance &amp; Product</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F9FA;
+            color: #212529;
+        }
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .nav-link {
+            color: #4b5563;
+            padding-bottom: 2px;
+            border-bottom: 2px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .nav-link:hover { color: #2563eb; }
+        .nav-link.active {
+            color: #1d4ed8;
+            font-weight: 600;
+            border-bottom-color: #1d4ed8;
+        }
+        .tag {
+            display: inline-block;
+            background-color: #e0edff;
+            color: #1d4ed8;
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 0.2rem 0.6rem;
+            border-radius: 9999px;
+            margin: 0.15rem 0.15rem 0 0;
+        }
+        .category-label {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 0.2rem 0.6rem;
+            border-radius: 0.25rem;
+            margin-bottom: 0.75rem;
+        }
+        .stat-card {
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            border: 2px solid transparent;
+        }
+        .stat-card:hover, .stat-card.selected {
+            transform: translateY(-4px);
+            border-color: #2563eb;
+        }
+
+        /* Modal specific styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease-in-out;
+        }
+        .modal-overlay.show .modal-content {
+            transform: translateY(0);
+        }
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #4a5568;
+            transition: color 0.2s;
+        }
+        .modal-close:hover {
+            color: #2d3748;
+        }
+        .modal-content h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #2d3748;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+        }
+        .modal-content p, .modal-content li {
+             color: #4a5568;
+             line-height: 1.6;
+        }
+        .modal-content ul {
+            list-style: disc;
+            list-style-position: inside;
+            margin-left: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .modal-content li {
+            margin-bottom: 0.5rem;
+        }
+        .modal-content code {
+            background-color: #e2e8f0;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header id="header" class="glassmorphism sticky top-0 z-50 transition-shadow duration-300 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#home" class="text-xl font-bold text-gray-800">Aayush Mohan Bhagat</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="#achievements" class="nav-link">Highlights</a>
+                <a href="#projects" class="nav-link">Projects</a>
+                <a href="#experience" class="nav-link">Leadership</a>
+                <a href="#skills" class="nav-link">Skills</a>
+                <a href="#certifications" class="nav-link">Achievements</a>
+                <a href="#education" class="nav-link">Education</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-gray-800 focus:outline-none" aria-label="Open menu">
+                <canvas id="hamburger-icon" width="24" height="24"></canvas>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#achievements" class="block py-2 px-6 text-sm text-gray-700 hover:bg-gray-200">Highlights</a>
+            <a href="#projects" class="block py-2 px-6 text-sm text-gray-700 hover:bg-gray-200">Projects</a>
+            <a href="#experience" class="block py-2 px-6 text-sm text-gray-700 hover:bg-gray-200">Leadership</a>
+            <a href="#skills" class="block py-2 px-6 text-sm text-gray-700 hover:bg-gray-200">Skills</a>
+            <a href="#certifications" class="block py-2 px-6 text-sm text-gray-700 hover:bg-gray-200">Achievements</a>
+            <a href="#education" class="block py-2 px-6 text-sm text-gray-700 hover:bg-gray-200">Education</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- ===================== HERO ===================== -->
+        <section id="home" class="min-h-screen flex items-center bg-white">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-bold text-gray-800 leading-tight">Aayush Mohan Bhagat</h1>
+                <p class="text-xl md:text-2xl text-blue-600 font-medium mt-2">Strategy &middot; Finance &middot; Product</p>
+                <p class="mt-6 max-w-3xl mx-auto text-gray-600 text-lg">
+                    Third-year undergraduate at IIT Gandhinagar drawn to strategy and finance, with a mindset built around breaking ambiguous problems into structured questions and answering them with numbers. I apply market sizing, unit economics, DCF valuation, and SQL/Power BI analytics to turn analysis into clear recommendations.
+                </p>
+                <p class="mt-4 max-w-3xl mx-auto text-gray-500">
+                    Ken Case Competition semifinalist (top 7%) &nbsp;&middot;&nbsp; Top 2.5% at Product Matters 6.0
+                </p>
+                <div class="mt-8 flex flex-wrap justify-center items-center gap-4">
+                    <a href="mailto:aayush.bhagat@iitgn.ac.in" class="bg-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 transition-transform transform hover:scale-105 flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+                        <span>Contact Me</span>
+                    </a>
+                    <a href="https://www.linkedin.com/in/aayush-mohan-bhagat-" target="_blank" rel="noopener" class="bg-[#0a66c2] text-white font-bold py-3 px-6 rounded-lg hover:bg-[#004182] transition-transform transform hover:scale-105 flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 1 1 8.3 6.5a1.78 1.78 0 0 1-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0 0 13 14.19a.66.66 0 0 0 0 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 0 1 2.7-1.4c1.55 0 3.36.86 3.36 3.66z"></path></svg>
+                        <span>LinkedIn</span>
+                    </a>
+                    <a href="tel:+919171193330" class="bg-green-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-700 transition-transform transform hover:scale-105 flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                        <span>(+91) 9171193330</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================== HIGHLIGHTS ===================== -->
+        <section id="achievements" class="py-20 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-4">Key Highlights</h2>
+                <p class="text-center text-gray-600 mb-10 max-w-2xl mx-auto">The headline numbers behind my work across strategy, finance, product, and leadership. Click a card to read the context behind each result.</p>
+                <div id="stat-grid" class="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-8"></div>
+                <div id="achievement-description" class="bg-white p-6 rounded-xl shadow-lg max-w-3xl mx-auto text-gray-700 text-center min-h-[80px] flex items-center justify-center">
+                    <p>Click a card above to learn more about each highlight.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================== PROJECTS ===================== -->
+        <section id="projects" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-4">Projects</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Two consulting cases, an analytics study, a product strategy, and a quantitative finance build, each ending in a decision-ready output.</p>
+                <div class="grid md:grid-cols-2 gap-8">
+
+                    <div class="bg-gray-50 rounded-xl shadow-lg p-6 transform hover:-translate-y-2 transition-transform duration-300 flex flex-col">
+                        <span class="category-label bg-blue-100 text-blue-800 self-start">Consulting</span>
+                        <h3 class="text-xl font-semibold mb-1">Titan Company: Industry Research &amp; Growth Strategy</h3>
+                        <p class="text-xs text-gray-400 mb-3">Guided project, mentored by an IIM-B alumnus &amp; Kearney associate</p>
+                        <p class="text-gray-600 mb-3">Assessed where Titan should invest next, tracing its ROCE and margin expansion to studded-jewellery mix and a gold-metal-loan cost edge, then prioritized eight growth options on a weighted scoring model to recommend gold-market consolidation as the anchor bet.</p>
+                        <div class="mb-2">
+                            <span class="tag">Porter's Five Forces</span><span class="tag">Industry Research</span><span class="tag">Financial Analysis</span><span class="tag">Growth Strategy</span>
+                        </div>
+                        <button class="view-approach-btn bg-blue-600 text-white text-sm py-2 px-4 rounded-lg hover:bg-blue-700 transition-transform transform hover:scale-105 mt-auto self-start" data-project="titan">View Approach</button>
+                    </div>
+
+                    <div class="bg-gray-50 rounded-xl shadow-lg p-6 transform hover:-translate-y-2 transition-transform duration-300 flex flex-col">
+                        <span class="category-label bg-blue-100 text-blue-800 self-start">Consulting</span>
+                        <h3 class="text-xl font-semibold mb-1">Rapido Ownly: Food-Delivery Market Entry &amp; Unit Economics</h3>
+                        <p class="text-xs text-gray-400 mb-3">Strategy case &middot; Jun '26 &ndash; Jul '26</p>
+                        <p class="text-gray-600 mb-3">Structured Rapido's food-delivery entry decision with an issue tree and a bear/base/bull model, isolating a structural &#8377;34 per-order contribution loss and recommending Ownly as a utilization layer on idle captain time rather than a standalone business.</p>
+                        <div class="mb-2">
+                            <span class="tag">Issue Tree</span><span class="tag">Unit Economics</span><span class="tag">Scenario Analysis</span><span class="tag">GTM Strategy</span>
+                        </div>
+                        <button class="view-approach-btn bg-blue-600 text-white text-sm py-2 px-4 rounded-lg hover:bg-blue-700 transition-transform transform hover:scale-105 mt-auto self-start" data-project="rapido">View Approach</button>
+                    </div>
+
+                    <div class="bg-gray-50 rounded-xl shadow-lg p-6 transform hover:-translate-y-2 transition-transform duration-300 flex flex-col">
+                        <span class="category-label bg-teal-100 text-teal-800 self-start">Analytics</span>
+                        <h3 class="text-xl font-semibold mb-1">Global Unicorn Capital-Efficiency Study</h3>
+                        <p class="text-xs text-gray-400 mb-3">SQL &amp; Power BI &middot; Jun '26 &ndash; Jul '26</p>
+                        <p class="text-gray-600 mb-3">Ranked sectors by value created per funding dollar across 1,074 unicorns, showing that averages overstated software's lead while fintech outperformed on a median basis, and framed a $100M capital-allocation thesis from the findings.</p>
+                        <div class="mb-2">
+                            <span class="tag">SQL (DuckDB)</span><span class="tag">Power BI</span><span class="tag">Capital Allocation</span>
+                        </div>
+                        <button class="view-approach-btn bg-blue-600 text-white text-sm py-2 px-4 rounded-lg hover:bg-blue-700 transition-transform transform hover:scale-105 mt-auto self-start" data-project="unicorn">View Approach</button>
+                    </div>
+
+                    <div class="bg-gray-50 rounded-xl shadow-lg p-6 transform hover:-translate-y-2 transition-transform duration-300 flex flex-col">
+                        <span class="category-label bg-purple-100 text-purple-800 self-start">Product</span>
+                        <h3 class="text-xl font-semibold mb-1">IndusInd Fleet OS: General Insurance Product Strategy</h3>
+                        <p class="text-xs text-gray-400 mb-3">Product Matters 6.0, E-Cell IIT Guwahati &middot; Top 2.5%</p>
+                        <p class="text-gray-600 mb-3">Narrowed a broad general-insurance brief to commercial fleet SMEs, built the persona around a 35-vehicle logistics operator, and designed a motor-insurance-first platform with lending and compliance as cross-sell layers, validated through a clickable prototype.</p>
+                        <div class="mb-2">
+                            <span class="tag">User Research</span><span class="tag">Prototyping</span><span class="tag">GTM</span><span class="tag">Roadmapping</span>
+                        </div>
+                        <button class="view-approach-btn bg-blue-600 text-white text-sm py-2 px-4 rounded-lg hover:bg-blue-700 transition-transform transform hover:scale-105 mt-auto self-start" data-project="indusind">View Approach</button>
+                    </div>
+
+                    <div class="bg-gray-50 rounded-xl shadow-lg p-6 transform hover:-translate-y-2 transition-transform duration-300 flex flex-col md:col-span-2 md:max-w-[calc(50%-1rem)] md:mx-auto md:w-full">
+                        <span class="category-label bg-amber-100 text-amber-800 self-start">Finance</span>
+                        <h3 class="text-xl font-semibold mb-1">Quantitative Options Risk Engine</h3>
+                        <p class="text-xs text-gray-400 mb-3">ES 418 Financial Modelling, under Prof. Mithun Radhakrishna &middot; Mar '26 &ndash; Apr '26</p>
+                        <p class="text-gray-600 mb-3">Priced European and American options with Black-Scholes-Merton and a 100-step binomial tree, built an implied-volatility solver, computed the Greeks on live market data, and shipped it all as an interactive Streamlit dashboard.</p>
+                        <div class="mb-2">
+                            <span class="tag">Python</span><span class="tag">Black-Scholes</span><span class="tag">Binomial Tree</span><span class="tag">Greeks</span><span class="tag">Streamlit</span>
+                        </div>
+                        <button class="view-approach-btn bg-blue-600 text-white text-sm py-2 px-4 rounded-lg hover:bg-blue-700 transition-transform transform hover:scale-105 mt-auto self-start" data-project="options">View Approach</button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================== LEADERSHIP ===================== -->
+        <section id="experience" class="py-20 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-4">Leadership &amp; Positions of Responsibility</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Roles where I owned budgets, logistics, and stakeholder coordination at scale.</p>
+                <div class="relative border-l-2 border-blue-200 pl-10 max-w-4xl mx-auto">
+                    <div class="mb-12 relative">
+                        <div class="absolute w-4 h-4 bg-blue-600 rounded-full -left-[49px] mt-1.5"></div>
+                        <p class="text-sm text-gray-500">Jan '25 &ndash; Jan '26</p>
+                        <h3 class="text-xl font-semibold text-gray-800">Core Team Member, Events &amp; Management | Amalthea '25, IIT Gandhinagar Technical Summit</h3>
+                        <ul class="mt-2 list-disc list-inside text-gray-600 space-y-1">
+                            <li>Led a 150+ member team to deliver IIT Gandhinagar's highest-budgeted, first grand-scale technical summit, reaching 7,000+ attendees.</li>
+                            <li>Directed budgeting and resource allocation, negotiating directly with external vendors and institute administration.</li>
+                        </ul>
+                    </div>
+                    <div class="mb-12 relative">
+                        <div class="absolute w-4 h-4 bg-blue-600 rounded-full -left-[49px] mt-1.5"></div>
+                        <p class="text-sm text-gray-500">Apr '25 &ndash; Present</p>
+                        <h3 class="text-xl font-semibold text-gray-800">Career Development Services Representative | Placement Cell, IIT Gandhinagar</h3>
+                        <ul class="mt-2 list-disc list-inside text-gray-600 space-y-1">
+                            <li>Facilitate placement drives through core logistics and direct liaison with corporate HRs.</li>
+                            <li>Maintain candidate tracking at 100% compliance across recruitment processes.</li>
+                        </ul>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute w-4 h-4 bg-blue-600 rounded-full -left-[49px] mt-1.5"></div>
+                        <p class="text-sm text-gray-500">2024</p>
+                        <h3 class="text-xl font-semibold text-gray-800">House Coordinator | Intramurals, IIT Gandhinagar</h3>
+                        <ul class="mt-2 list-disc list-inside text-gray-600 space-y-1">
+                            <li>Led a 384-student house across institute-wide sports competitions.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================== SKILLS ===================== -->
+        <section id="skills" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-4">Skills</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">A toolkit spanning strategy, product, finance, and analytics, from framing the problem to modeling the numbers behind the answer.</p>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                    <div class="bg-gray-50 rounded-xl shadow-lg p-6 border-t-4 border-blue-500">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Strategy</h3>
+                        <div class="flex flex-wrap">
+                            <span class="tag">Market Sizing (TAM/SAM/SOM)</span><span class="tag">GTM Strategy</span><span class="tag">Business Case Development</span><span class="tag">Competitor Analysis</span><span class="tag">Root Cause Analysis</span>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl shadow-lg p-6 border-t-4 border-purple-500">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Product</h3>
+                        <div class="flex flex-wrap">
+                            <span class="tag">PRDs &amp; User Stories</span><span class="tag">User Research</span><span class="tag">Product Roadmap</span><span class="tag">RICE Prioritization</span><span class="tag">A/B Testing</span><span class="tag">Wireframing &amp; Prototyping</span>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl shadow-lg p-6 border-t-4 border-amber-500">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Finance</h3>
+                        <div class="flex flex-wrap">
+                            <span class="tag">Financial Modeling</span><span class="tag">DCF Valuation</span><span class="tag">Unit Economics</span><span class="tag">Capital Allocation</span><span class="tag">Cost Optimization</span><span class="tag">Financial Statement Analysis</span>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl shadow-lg p-6 border-t-4 border-teal-500">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Data &amp; Analytics</h3>
+                        <div class="flex flex-wrap">
+                            <span class="tag">SQL</span><span class="tag">Python</span><span class="tag">Power BI</span><span class="tag">Advanced Excel</span><span class="tag">Dashboards</span><span class="tag">Funnel Analysis</span><span class="tag">Cohort Analysis</span><span class="tag">Metric Tracking</span>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl shadow-lg p-6 border-t-4 border-gray-500">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Tools</h3>
+                        <div class="flex flex-wrap">
+                            <span class="tag">MS Excel</span><span class="tag">MS PowerPoint</span><span class="tag">Power BI</span><span class="tag">Jupyter</span><span class="tag">GitHub</span><span class="tag">Figma</span><span class="tag">Jira</span><span class="tag">Postman</span><span class="tag">Mixpanel</span><span class="tag">Miro</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================== ACHIEVEMENTS & CERTIFICATIONS ===================== -->
+        <section id="certifications" class="py-20 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-4">Achievements &amp; Certifications</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Competition results, selections, and credentials.</p>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                    <div class="bg-white rounded-xl shadow-lg p-6 transform hover:-translate-y-2 transition-transform duration-300 border-l-4 border-blue-500">
+                        <span class="tag">Competition</span>
+                        <h3 class="text-lg font-semibold text-gray-800 mt-2">Semifinalist (Top 7%), Ken Case Competition</h3>
+                        <p class="text-sm text-gray-600 mt-2">Reached the semifinals among 6,000+ teams from 300+ colleges nationwide.</p>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-lg p-6 transform hover:-translate-y-2 transition-transform duration-300 border-l-4 border-purple-500">
+                        <span class="tag">Competition</span>
+                        <h3 class="text-lg font-semibold text-gray-800 mt-2">Top 2.5%, Product Matters 6.0</h3>
+                        <p class="text-sm text-gray-600 mt-2">E-Cell IIT Guwahati's flagship product management program.</p>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-lg p-6 transform hover:-translate-y-2 transition-transform duration-300 border-l-4 border-teal-500">
+                        <span class="tag">Fellowship</span>
+                        <h3 class="text-lg font-semibold text-gray-800 mt-2">IIT Gandhinagar Explorer Fellow</h3>
+                        <p class="text-sm text-gray-600 mt-2">Selected for a six-week journey across India, engaging with diverse cultures and communities.</p>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-lg p-6 transform hover:-translate-y-2 transition-transform duration-300 border-l-4 border-rose-500">
+                        <span class="tag">Representation</span>
+                        <h3 class="text-lg font-semibold text-gray-800 mt-2">Inter IIT Cultural Meet 8.0</h3>
+                        <p class="text-sm text-gray-600 mt-2">Represented IIT Gandhinagar at the meet hosted by IIT Kanpur (2025).</p>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-lg p-6 transform hover:-translate-y-2 transition-transform duration-300 border-l-4 border-amber-500">
+                        <span class="tag">Certification</span>
+                        <h3 class="text-lg font-semibold text-gray-800 mt-2">Fintech Essentials</h3>
+                        <p class="text-sm text-blue-600 font-medium mt-1">GIFT International Fintech Institute with UC San Diego, AU &amp; IITGN</p>
+                        <p class="text-sm text-gray-600 mt-2">Program covering digital payments and lending.</p>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-lg p-6 transform hover:-translate-y-2 transition-transform duration-300 border-l-4 border-gray-500">
+                        <span class="tag">Simulation</span>
+                        <h3 class="text-lg font-semibold text-gray-800 mt-2">BCG Strategy Consulting Job Simulation</h3>
+                        <p class="text-sm text-blue-600 font-medium mt-1">Forage</p>
+                        <p class="text-sm text-gray-600 mt-2">Tasks in market research, financial modeling, and data analysis.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================== EDUCATION ===================== -->
+        <section id="education" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Education</h2>
+                <div class="max-w-2xl mx-auto space-y-6">
+                    <div class="bg-gray-50 rounded-xl shadow-lg p-8 text-center border-t-4 border-blue-600">
+                        <h3 class="text-xl font-bold text-gray-800">B.Tech, Materials Science and Engineering</h3>
+                        <p class="text-blue-600 font-medium mt-1">Indian Institute of Technology, Gandhinagar</p>
+                        <p class="text-sm text-gray-600 mt-2">2024 &ndash; Present</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="bg-gray-50 rounded-xl shadow p-5 text-center">
+                            <h3 class="font-semibold text-gray-800">Class XII, CBSE</h3>
+                            <p class="text-sm text-gray-600 mt-1">79.9% &middot; 2024</p>
+                        </div>
+                        <div class="bg-gray-50 rounded-xl shadow p-5 text-center">
+                            <h3 class="font-semibold text-gray-800">Class X, CBSE</h3>
+                            <p class="text-sm text-gray-600 mt-1">93.2% &middot; 2022</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-6">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2026 Aayush Mohan Bhagat. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- ===================== MODALS ===================== -->
+
+    <div id="titan-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Titan Company: Industry Research &amp; Growth Strategy</h2>
+            <p class="mb-4">A guided consulting project, mentored by an IIM-Bangalore alumnus and a Kearney associate, built around one question: where should Titan invest next across watches, jewellery, and adjacent businesses?</p>
+            <h3>1. Industry Assessment</h3>
+            <p>Co-authored an industry research report on Titan and the Indian watch &amp; jewellery sector, covering brand portfolio, corporate history, and financials. Assessed industry attractiveness with <strong>Porter's Five Forces</strong> and competitive-share benchmarking, and traced how Titan displaced the former market leader, <strong>HMT</strong>.</p>
+            <h3>2. Financial Diagnosis</h3>
+            <ul>
+                <li>Attributed Titan's <strong>ROCE and margin expansion</strong> to a higher studded-jewellery mix and a <strong>gold-metal-loan cost edge</strong>.</li>
+                <li>Diagnosed the drivers behind the <strong>Tanishq turnaround</strong>.</li>
+            </ul>
+            <h3>3. Recommendation</h3>
+            <p>Prioritized <strong>eight growth options</strong> on a weighted multi-criteria scoring model, recommending <strong>gold-market consolidation</strong> as Titan's anchor bet for its next growth phase.</p>
+        </div>
+    </div>
+
+    <div id="rapido-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Rapido Ownly: Food-Delivery Market Entry &amp; Unit Economics</h2>
+            <p class="mb-4">The question: should Rapido enter India's food-delivery market, effectively a Zomato&ndash;Swiggy duopoly? I built the answer on economics and structural moats rather than brand or app features.</p>
+            <h3>1. Structuring the Problem</h3>
+            <p>Broke the entry decision into a MECE <strong>issue tree</strong>, then built a <strong>bear/base/bull unit-economics model</strong> in <code>Excel</code> that decomposed the per-order P&amp;L into its cost drivers.</p>
+            <h3>2. The Economics</h3>
+            <ul>
+                <li>Isolated a <strong>structural &#8377;34 per-order contribution loss</strong>: &#8377;30 of revenue against &#8377;64 of cost.</li>
+                <li>Found that <strong>rider payouts drive about 75% of order cost</strong>, making rider efficiency the single biggest profitability lever.</li>
+            </ul>
+            <h3>3. Competitive Benchmarking</h3>
+            <p>Benchmarked the duopoly and identified <strong>delivery density</strong> and <strong>rider utilization</strong> as the only defensible moats available to a third entrant.</p>
+            <h3>4. Recommendation</h3>
+            <p>Position Ownly as a <strong>utilization layer on idle captain time</strong>, not a standalone food business, and gate any expansion on <strong>contribution margin</strong> turning positive. Scale should follow proof, not precede it.</p>
+        </div>
+    </div>
+
+    <div id="unicorn-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Global Unicorn Capital-Efficiency Study</h2>
+            <p class="mb-4">The goal was to look past headline valuations and ask a sharper question: which sectors create the most value per dollar of funding raised?</p>
+            <h3>1. Data &amp; Metric Design</h3>
+            <p>Working on a CB Insights dataset of <strong>1,074 global unicorns</strong>, I defined capital efficiency as <strong>value created per funding dollar</strong> and used <code>SQL (DuckDB)</code> to compute and rank it by sector.</p>
+            <h3>2. The Key Insight</h3>
+            <p>On averages, software looked like the clear leader. But averages were being pulled up by a few outliers. On a <strong>median basis, fintech outperformed</strong>, reversing the headline sector ranking.</p>
+            <h3>3. Output</h3>
+            <ul>
+                <li>Built an interactive <code>Power BI</code> dashboard that turned sector-level findings into decision-ready business cases for investors.</li>
+                <li>Framed a <strong>$100M capital-allocation thesis</strong> weighted toward fintech and the most capital-efficient sectors, backed by median-based rankings.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="indusind-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">IndusInd Fleet OS: General Insurance Product Strategy</h2>
+            <p class="mb-4">Built for the E-Cell IIT Guwahati &times; IndusInd capstone at Product Matters 6.0, where this entry ranked in the <strong>top 2.5% of participants</strong>. The brief: reimagine how customers discover, buy, and manage general insurance.</p>
+            <h3>1. Choosing the Wedge</h3>
+            <p>Rather than design for the broad retail buyer, I narrowed the brief to <strong>commercial fleet SMEs</strong>, a segment with recurring, high-value insurance needs.</p>
+            <h3>2. User &amp; Problem</h3>
+            <p>Built the persona around a <strong>35-vehicle logistics operator</strong> and mapped pain points across insurance, lending, FASTag, and driver compliance.</p>
+            <h3>3. Solution</h3>
+            <p>Designed a <strong>motor-insurance-first platform</strong> with lending and compliance as cross-sell layers, validated through a clickable prototype.</p>
+            <h3>4. Execution</h3>
+            <p>Defined the <strong>go-to-market plan, success metrics, and phased roadmap</strong>, prioritizing features by impact to de-risk the launch sequence.</p>
+        </div>
+    </div>
+
+    <div id="options-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Quantitative Options Risk Engine</h2>
+            <p class="mb-4">Built for ES 418 Financial Modelling under Prof. Mithun Radhakrishna: a full-stack engine that prices options, measures their risk, and lets a user explore both through a live dashboard.</p>
+            <h3>1. Pricing Models</h3>
+            <ul>
+                <li>Implemented the closed-form <strong>Black-Scholes-Merton</strong> model for European options in <code>Python</code>.</li>
+                <li>Built a <strong>100-step binomial tree</strong> to price American options, capturing the early-exercise premium that Black-Scholes cannot.</li>
+                <li>Cross-validated the two models against each other as a built-in check on pricing accuracy.</li>
+            </ul>
+            <h3>2. Implied Volatility &amp; the Greeks</h3>
+            <p>Built an <strong>implied-volatility solver</strong> converging to a 10<sup>&minus;6</sup> tolerance, and computed the <strong>Greeks</strong> on live market data pulled from the Yahoo Finance API.</p>
+            <h3>3. Visualization</h3>
+            <p>Shipped an interactive <code>Streamlit</code> dashboard with 3D plots of the <strong>volatility smile</strong>, showing exactly where Black-Scholes's constant-volatility assumption breaks down in real markets.</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('main section');
+            const descriptionDiv = document.getElementById('achievement-description');
+            const hamburgerIconCanvas = document.getElementById('hamburger-icon');
+            const htx = hamburgerIconCanvas.getContext('2d');
+
+            /* ---------- Highlights ---------- */
+            const highlights = [
+                { value: '150+', label: 'Team members led', text: "Led a 150+ member team to deliver Amalthea '25, IIT Gandhinagar's highest-budgeted, first grand-scale technical summit, reaching 7,000+ attendees." },
+                { value: 'Top 7%', label: 'Ken Case Competition', text: 'Reached the semifinals of the Ken Case Competition among 6,000+ teams from 300+ colleges nationwide.' },
+                { value: 'Top 2.5%', label: 'Product Matters 6.0', text: "Ranked in the top 2.5% at E-Cell IIT Guwahati's Product Matters 6.0 with IndusInd Fleet OS, a fleet-SME general-insurance platform." },
+                { value: '&#8377;34', label: 'Per-order loss isolated', text: 'Isolated a structural &#8377;34 per-order contribution loss in the Rapido Ownly entry model (&#8377;30 revenue vs. &#8377;64 cost), with rider payouts driving 75% of order cost.' },
+                { value: '1,074', label: 'Unicorns analyzed', text: 'Ranked sectors by value created per funding dollar across 1,074 unicorns in SQL, finding that fintech outperformed software on a median basis.' },
+                { value: '$100M', label: 'Allocation thesis', text: 'Framed a $100M capital-allocation thesis weighted toward fintech and the most capital-efficient sectors, backed by median-based rankings.' }
+            ];
+            const statGrid = document.getElementById('stat-grid');
+            highlights.forEach((h, i) => {
+                const card = document.createElement('button');
+                card.className = 'stat-card bg-white rounded-xl shadow-lg p-6 text-center';
+                card.innerHTML = `<div class="text-3xl md:text-4xl font-bold text-blue-700">${h.value}</div><div class="text-sm text-gray-600 mt-2">${h.label}</div>`;
+                card.addEventListener('click', () => {
+                    document.querySelectorAll('.stat-card').forEach(c => c.classList.remove('selected'));
+                    card.classList.add('selected');
+                    descriptionDiv.innerHTML = `<p>${h.text}</p>`;
+                });
+                statGrid.appendChild(card);
+            });
+
+            /* ---------- Modals ---------- */
+            const modals = {
+                'titan': document.getElementById('titan-modal'),
+                'rapido': document.getElementById('rapido-modal'),
+                'unicorn': document.getElementById('unicorn-modal'),
+                'indusind': document.getElementById('indusind-modal'),
+                'options': document.getElementById('options-modal')
+            };
+            document.querySelectorAll('.view-approach-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const modal = modals[button.dataset.project];
+                    if (modal) modal.classList.add('show');
+                });
+            });
+            Object.values(modals).forEach(modal => {
+                modal.querySelector('.modal-close').addEventListener('click', () => modal.classList.remove('show'));
+                modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('show'); });
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') Object.values(modals).forEach(m => m.classList.remove('show'));
+            });
+
+            /* ---------- Mobile menu ---------- */
+            function drawHamburgerIcon(state) {
+                htx.clearRect(0, 0, 24, 24);
+                htx.fillStyle = '#212529';
+                if (state === 'menu') {
+                    htx.fillRect(0, 3, 24, 4);
+                    htx.fillRect(0, 10, 24, 4);
+                    htx.fillRect(0, 17, 24, 4);
+                } else {
+                    htx.save();
+                    htx.translate(12, 12);
+                    htx.rotate(Math.PI / 4);
+                    htx.fillRect(-12, -2, 24, 4);
+                    htx.rotate(-Math.PI / 2);
+                    htx.fillRect(-12, -2, 24, 4);
+                    htx.restore();
+                }
+            }
+            drawHamburgerIcon('menu');
+            mobileMenuButton.addEventListener('click', function () {
+                mobileMenu.classList.toggle('hidden');
+                drawHamburgerIcon(mobileMenu.classList.contains('hidden') ? 'menu' : 'close');
+            });
+
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    const target = this.getAttribute('href');
+                    if (target.length > 1) {
+                        e.preventDefault();
+                        document.querySelector(target).scrollIntoView({ behavior: 'smooth' });
+                        if (!mobileMenu.classList.contains('hidden')) {
+                            mobileMenu.classList.add('hidden');
+                            drawHamburgerIcon('menu');
+                        }
+                    }
+                });
+            });
+
+            /* ---------- Active nav link ---------- */
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+                        });
+                    }
+                });
+            }, { root: null, rootMargin: '0px', threshold: 0.4 });
+            sections.forEach(section => observer.observe(section));
+        });
+    </script>
+</body>
+</html>
